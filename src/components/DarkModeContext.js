@@ -16,7 +16,7 @@ export const DarkModeProvider = ({ children }) => {
   const toggleMode = () => {
     const newMode = mode === 'dark' ? 'light' : 'dark';
     setMode(newMode);
-    document.body.style.backgroundColor = newMode === 'white' ? '#042743' : 'dark';
+    document.body.style.backgroundColor = newMode === 'light' ? '#042743' : 'dark';
     localStorage.setItem('mode', newMode);
   };
 

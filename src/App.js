@@ -4,7 +4,7 @@ import TextForm from './components/TextForm';
 import About from './components/About';
 import React, { useState, useEffect } from 'react';
 import Alert from './components/Alert';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';  // added Navigate for redirect
 
 function Home({ showAlert, mode }) {
   return (
@@ -34,8 +34,9 @@ function App() {
   };
 
   const toggleMode = () => {
-    setMode(prevMode => prevMode === 'light' ? 'dark' : 'light');
-    showAlert(`Dark mode ${mode === 'light' ? 'enabled' : 'disabled'}`, mode === 'light' ? 'success' : 'danger');
+    const newMode = mode === 'light' ? 'dark' : 'light';
+    setMode(newMode);
+    showAlert(`Dark mode ${newMode === 'dark' ? 'enabled' : 'disabled'}`, newMode === 'dark' ? 'success' : 'danger');
   };
 
   return (
@@ -43,10 +44,14 @@ function App() {
       <Router>
         <Navbar title="Textutils" aboutText="About Textutils" mode={mode} toggleMode={toggleMode} />
         <Alert alert={alert} />
-        <Routes>
-          <Route path="/" element={<Home showAlert={showAlert} mode={mode} />} />
-          <Route path="/about" element={<About mode={mode} />} />
-        </Routes>
+        <div className="container my-3">
+          <Routes>
+            <Route path="/" element={<Home showAlert={showAlert} mode={mode} />} />
+            <Route path="/about" element={<About mode={mode} />} />
+            {/* Add a route to redirect to Home if no route matches */}
+            <Route path="*" element={<Navigate to="/" />} /> {/* This line handles unmatched routes */}
+          </Routes>
+        </div>
       </Router>
     </>
   );
